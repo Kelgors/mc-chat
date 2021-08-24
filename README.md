@@ -21,6 +21,6 @@ You can provide your password via the -P &lt;password&gt; argument but it will b
 
 ## Resources
 
-[https://wiki.vg/Chat](https://wiki.vg/Chat)
-[https://github.com/PrismarineJS/node-minecraft-protocol/blob/master/docs/API.md](https://github.com/PrismarineJS/node-minecraft-protocol/blob/master/docs/API.md)
-[https://minecraft.fandom.com/wiki/Launcher_profiles.json](https://minecraft.fandom.com/wiki/Launcher_profiles.json)
+* [https://wiki.vg/Chat](https://wiki.vg/Chat)
+* [https://github.com/PrismarineJS/node-minecraft-protocol/blob/master/docs/API.md](https://github.com/PrismarineJS/node-minecraft-protocol/blob/master/docs/API.md)
+* [https://minecraft.fandom.com/wiki/Launcher_profiles.json](https://minecraft.fandom.com/wiki/Launcher_profiles.json)
