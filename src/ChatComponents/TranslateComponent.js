@@ -23,7 +23,7 @@ class TranslateComponent extends Component {
         for (const index in this.with) {
             output = output.replace('%s', this.with[index].toString());
         }
-        return output + super.toString();
+        return this.getFormatter()(output + super.toString());
     }
 }
 

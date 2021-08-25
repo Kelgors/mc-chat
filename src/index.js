@@ -44,7 +44,7 @@ function run() {
   // wait for chat message to log
   client.on('chat', function (packet) {
     const jsonMsg = JSON.parse(packet.message);
-    if (DEBUG) console.dir(jsonMsg);
+    if (DEBUG) console.log(JSON.stringify(jsonMsg));
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
     console.log(ChatComponents.fromJson(jsonMsg).toString());

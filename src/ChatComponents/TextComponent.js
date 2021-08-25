@@ -15,7 +15,7 @@ class TextComponent extends Component {
     }
 
     toString() {
-        return this.getFormatter()(this.text) + super.toString();
+        return this.getFormatter()(this.text + super.toString());
     }
 }
 module.exports = TextComponent;

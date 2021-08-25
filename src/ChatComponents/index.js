@@ -24,7 +24,7 @@ function fromJsonObject(object) {
             component.with = fromJsonArray(object.with);
         }
     }
-    if ('text' in object) {
+    else {
         component = new TextComponent(object);
     }
     if (Array.isArray(object.extra)) component.extra = fromJsonArray(object.extra);
