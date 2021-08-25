@@ -12,7 +12,7 @@ program.parse(process.argv);
 // Prepare client & console
 const chalk = require('chalk');
 const MC = require('minecraft-protocol');
-const transformJsonToText = require('./transformJsonToText.js');
+const ChatComponents = require('./ChatComponents');
 const readline = require('./readline.js')
 // Check for password
 const options = program.opts();
@@ -47,7 +47,7 @@ function run() {
     if (DEBUG) console.dir(jsonMsg);
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
-    console.log(transformJsonToText(jsonMsg));
+    console.log(ChatComponents.fromJson(jsonMsg).toString());
     readline.prompt(true);
   });
   // wait for message input

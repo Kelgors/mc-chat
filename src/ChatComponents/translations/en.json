@@ -1,0 +1,11 @@
+{
+    "argument.entity.notfound.player": "This player does not exists.",
+    "commands.list.players": "There are %s of a max of %s players online: %s",
+    "chat.type.announcement": "[%s] %s",
+    "chat.type.text": "<%s> %s",
+    "chat.type.emote": "* %s %s",
+    "commands.message.display.incoming": "From %s: %s",
+    "commands.message.display.outgoing": "To %s: %s",
+    "commands.seed.success": "%s",
+    "chat.square_brackets": "[%s]"
+}
