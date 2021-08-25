@@ -2,12 +2,14 @@
 
 Permit to chat from your terminal. Be aware that your character will be connected to the server
 and can take damage or die.
-You need a mojang account.
+You need a mojang account or microsoft account.
+
+Come say hi to `play.1ef51.com` =)
 
 ## Getting Started
 
 ```bash
-$ mc-chat -h 8.8.8.8 -p 25565 -u youremail@provider.ltd
+$ mc-chat --host 8.8.8.8 --port 25565 --user youremail@provider.ltd
 Minecraft password:
 Connecting to 8.8.8.8:25565...
 Notch joined the game
@@ -17,6 +19,7 @@ Notch joined the game
 ```
 
 You can provide your password via the -P &lt;password&gt; argument but it will be stored in your bash_history.
+Don't hesitate to user `mc-chat --help`
 
 ## TODO
 
