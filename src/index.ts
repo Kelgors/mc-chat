@@ -9,7 +9,7 @@ import ClearCommand from "./Commands/ClearCommand";
 import HelpCommand from "./Commands/HelpCommand";
 import ChatComponents from "./ChatComponents";
 
-import { initConnexion } from "./PacketManager";
+import PacketManager from "./PacketManager";
 
 const { version: PACKAGE_VERSION } = require("../package.json");
 
@@ -62,12 +62,9 @@ function run() {
     profilesFolder: false,
   });
 
-  client.on("packet", (packet: any, packetMeta: any) => {
-    initConnexion(packetMeta, packet);
-  });
-
   // wait for connection before doing anything
   client.on("connect", () => {
+    const packetManager = new PacketManager();
     const manager = new CommandManager();
     manager.setCommand("exit", new ExitCommand());
     manager.setCommand("clear", new ClearCommand());
@@ -84,6 +81,10 @@ function run() {
       console.log(ChatComponents.fromJson(jsonMsg).toString());
       // reset prompt
       readline.prompt(true);
+    });
+
+    client.on("packet", (packet: any, packetMeta: any) => {
+      packetManager.processPacket(packetMeta, packet);
     });
 
     // wait for input

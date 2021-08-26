@@ -17,8 +17,6 @@ import {
   MinecraftEntity,
 } from "./types/MinecraftPackets";
 
-let step = MinecraftStepInitConnexion.CONNEXION;
-
 export default class PacketManager {
   private secrets!: MinecraftSecrets;
   private threshold!: MinecraftThreshold;
@@ -145,15 +143,3 @@ export default class PacketManager {
     [MinecraftStepInitConnexion.MAX]: this.notImplementedStep,
   };
 }
-
-const client = new PacketManager();
-
-export const initConnexion = (packetMeta: any, packet: any) => {
-  client.processPacket(packetMeta, packet);
-  // const stepFunction = client.steps[step];
-  // if (stepFunction) stepFunction(packetMeta, packet);
-
-  step++;
-  if (step > MinecraftStepInitConnexion.MAX) return;
-  console.log(packetMeta);
-};
