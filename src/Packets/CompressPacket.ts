@@ -1,6 +1,9 @@
 import IPacketHandler from "../types/IPacketHandler";
 import { MinecraftThreshold } from "../types/MinecraftPackets";
 
+/**
+ * https://wiki.vg/Protocol#Set_Compression
+ */
 export default class CompressPacket implements IPacketHandler {
   packetMeta = "compress";
   compress!: MinecraftThreshold;

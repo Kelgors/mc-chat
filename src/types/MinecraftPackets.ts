@@ -1,9 +1,9 @@
 import { States } from "minecraft-protocol";
 
 export interface MinecraftPacketMeta {
-  size: number,
-  name: string,
-  state: States
+  size: number;
+  name: string;
+  state: States;
 }
 export interface MinecraftSecrets {
   serverId: string;
@@ -37,19 +37,20 @@ export interface MinecraftDifficultyInfo {
   difficultyLocked: boolean;
 }
 
-export interface MinecraftPlayerMovement {
+export interface MinecraftPlayerAbilities {
   flags: number;
   flyingSpeed: number;
   walkingSpeed: number;
 }
 
-export type MinecraftSlot = number;
+export type MinecraftSlotItem = number;
 
 export enum MinecraftGameMode {
   SURVIVAL,
   CREATIVE,
   ADVENTURE,
   SPECTATOR,
+  NONE = -1,
 }
 
 export type MinecraftDimensionValue = Record<string, any>;
@@ -95,48 +96,32 @@ export interface MinecraftTag {
 
 export type MinecraftTags = MinecraftTag[];
 
-export interface MinecraftEntity {
+export interface MinecraftEntityStatus {
   entityId: number;
   entityStatus: number;
 }
 
-export enum MinecraftStepInitConnexion {
-  CONNEXION,
-  THRESHOLD,
-  PLAYER_INFO,
-  SERVER_INFO,
-  CHANNEL,
-  DIFFICULTY_INFO,
-  MOVEMENT_INFO,
-  SLOTS,
-  RECIPES,
-  TAGS,
-  ENTITY_1,
-  ENTITY_2,
-  MAX,
-}
-
 export enum MinecraftClickEventAction {
-  OPEN_URL = 'open_url',
-  OPEN_FILE = 'open_file',
-  RUN_COMMAND = 'run_command',
-  SUGGEST_COMMAND = 'suggest_command',
-  CHANGE_PAGE = 'change_page',
-  COPY_TO_CLIPBOARD = 'copy_to_clipboard'
+  OPEN_URL = "open_url",
+  OPEN_FILE = "open_file",
+  RUN_COMMAND = "run_command",
+  SUGGEST_COMMAND = "suggest_command",
+  CHANGE_PAGE = "change_page",
+  COPY_TO_CLIPBOARD = "copy_to_clipboard",
 }
 
 export enum MinecraftHoverEventAction {
-  SHOW_TEXT = 'show_text',
-  SHOW_ITEM = 'show_item',
-  SHOW_ENTITY = 'show_entity'
+  SHOW_TEXT = "show_text",
+  SHOW_ITEM = "show_item",
+  SHOW_ENTITY = "show_entity",
 }
 
 export interface MinecraftClickEvent {
-  action : MinecraftClickEventAction,
-  value: string
+  action: MinecraftClickEventAction;
+  value: string;
 }
 
 export interface MinecraftHoverEvent {
-  action : MinecraftHoverEventAction,
-  value: string
+  action: MinecraftHoverEventAction;
+  value: string;
 }
