@@ -30,6 +30,7 @@ Available for Linux or WSL.
 ```bash
 git clone https://github.com/Kelgors/mc-chat.git
 cd mc-chat
+npm install
 npm install -g . # Add mc-chat command to your path
 ```
 
@@ -38,6 +39,7 @@ npm install -g . # Add mc-chat command to your path
 ```bash
 cd mc-chat
 git pull origin main
+npm install
 npm install -g . # Add mc-chat command to your path
 ```
 

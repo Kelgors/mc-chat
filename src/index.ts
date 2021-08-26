@@ -4,10 +4,12 @@ import ExitCommand from './Commands/ExitCommand';
 import ClearCommand from './Commands/ClearCommand';
 import HelpCommand from './Commands/HelpCommand';
 import ChatComponents from './ChatComponents';
+const { version: PACKAGE_VERSION } = require('../package.json');
 const chalk = require('chalk');
 const MC = require('minecraft-protocol');
 // Command-Line Arguments
 const { Command } = require('commander');
+console.log(`Welcome to mc-chat v${PACKAGE_VERSION}`);
 const program = new Command();
 program
   .option('-d, --debug', 'Output json text message')
@@ -34,7 +36,7 @@ if (!options.password) {
 
 function run() {
   // create connection
-  console.log(`Welcome to mc-chat v${process.version}\nType ".help" for more information and ".exit" to quit\nConnecting to ${chalk.cyan(options.host)}:${chalk.green(options.port)}...`);
+  console.log(`Type ".help" for more information and ".exit" to quit\nConnecting to ${chalk.cyan(options.host)}:${chalk.green(options.port)}...`);
   const client = MC.createClient({
     host: options.host,
     port: options.port,
