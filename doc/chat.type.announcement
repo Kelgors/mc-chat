@@ -1,0 +1,4 @@
+{
+  translate: 'chat.type.announcement',
+  with: [ { text: 'Server' }, { text: 'hello' } ]
+}

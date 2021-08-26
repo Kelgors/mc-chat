@@ -1,0 +1,4 @@
+{
+  translate: 'chat.type.text',
+  with: [ { text: 'Kelg0rs' }, { text: "need slime" } ]
+}

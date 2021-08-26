@@ -1,0 +1,5 @@
+{
+  color: 'red',
+  extra: [ { translate: 'argument.entity.notfound.player' } ],
+  text: ''
+}

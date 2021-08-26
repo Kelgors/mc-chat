@@ -1,0 +1,6 @@
+{
+  italic: true,
+  color: 'gray',
+  translate: 'commands.message.display.incoming',
+  with: [ { text: 'Mist3rAl3x' }, { text: 'coucou' } ]
+}

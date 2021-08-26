@@ -1,0 +1,12 @@
+{
+  translate: 'chat.type.emote',
+  with: [
+    {
+      insertion: 'Kelg0rs',
+      clickEvent: [Object],
+      hoverEvent: [Object],
+      text: 'Kelg0rs'
+    },
+    'baille'
+  ]
+}

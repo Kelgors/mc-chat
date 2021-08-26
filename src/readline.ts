@@ -5,8 +5,11 @@ const readline = require("readline").createInterface({
 
 readline.isPassword = false;
 
-readline._writeToOutput = (stringToWrite: string) => {
+readline._writeToOutput = function _writeToOutput(stringToWrite: string) {
   if (!readline.isPassword) readline.output.write(stringToWrite);
 };
+process.on('exit', () => {
+  readline.close();
+});
 
-module.exports = readline;
+export default readline;

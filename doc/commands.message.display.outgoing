@@ -1,0 +1,14 @@
+{
+  italic: true,
+  color: 'gray',
+  translate: 'commands.message.display.outgoing',
+  with: [
+    {
+      insertion: 'Kelg0rs',
+      clickEvent: [Object],
+      hoverEvent: [Object],
+      text: 'Kelg0rs'
+    },
+    { text: 'coucou' }
+  ]
+}

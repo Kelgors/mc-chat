@@ -1,0 +1,4 @@
+{
+  translate: 'commands.seed.success',
+  with: [ { translate: 'chat.square_brackets', with: [-5367709748494471706] } ]
+}

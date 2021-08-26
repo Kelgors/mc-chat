@@ -1,93 +1,34 @@
-import mc from "minecraft-protocol";
-const readline = require("./readline");
-
-import { Command } from "commander";
-
-import { initConnexion } from "./client";
-
+import readline from "./readline";
+import CommandManager from "./CommandManager";
+import ExitCommand from "./Commands/ExitCommand";
+import ClearCommand from "./Commands/ClearCommand";
+import HelpCommand from "./Commands/HelpCommand";
+import ChatComponents from "./ChatComponents";
+const { version: PACKAGE_VERSION } = require("../package.json");
+const chalk = require("chalk");
+const MC = require("minecraft-protocol");
+// Command-Line Arguments
+const { Command } = require("commander");
+console.log(`Welcome to mc-chat v${PACKAGE_VERSION}`);
 const program = new Command();
-
 program
   .option("-d, --debug", "Output json text message")
   .requiredOption("-h, --host <host>", "Specify the Minecraft IP server")
   .option(
     "-p, --port <port>",
     "Specify the Minecraft port used by the server",
-    "25565"
+    25565
   )
   .requiredOption("-u, --user <user>", "Minecraft account email")
   .option("-t, --type <type>", "Type of account (mojang|microsoft)", "mojang")
   .option("-P, --password <password>", "Minecraft account password");
 program.parse(process.argv);
 
-const run = () => {
-  console.log(`Connecting to ${options.host}:${options.port}...`);
-
-  const client = mc.createClient({
-    host: options.host,
-    port: options.port,
-    username: options.user,
-    password: options.password,
-    auth: options.type,
-  });
-
-  client.on("connect", function () {
-    console.info("connected");
-  });
-
-  client.on("disconnect", function (packet) {
-    console.log("disconnected: " + packet.reason);
-  });
-
-  client.on("end", function () {
-    console.log("Connection lost");
-    process.exit();
-  });
-
-  client.on("error", function (err) {
-    console.log("Error occured");
-    console.log(err);
-    process.exit(1);
-  });
-
-  client.on("state", (state) => {
-    console.log(state);
-  });
-
-  client.on("packet", (packet, packetMeta) => {
-    initConnexion(packet, packetMeta);
-  });
-
-  client.on("chat", function (packet) {
-    const jsonMsg = JSON.parse(packet.message);
-
-    if (
-      jsonMsg.translate === "chat.type.announcement" ||
-      jsonMsg.translate === "chat.type.text"
-    ) {
-      const username = jsonMsg.with[0].text;
-      if (username === client.username) return;
-
-      const msg = jsonMsg.with[1];
-
-      process.stdout.clearLine(-1, () => {});
-      process.stdout.cursorTo(0);
-      console.log(`<${username}> ${msg.text || msg}`);
-      readline.prompt(true);
-    }
-  });
-
-  readline.on("line", (str: string) => {
-    client.write("chat", { message: str });
-  });
-};
-
 // Check for password
 const options = program.opts();
-
-// Ask for password if not given
 if (!options.password) {
-  readline.question("Minecraft password: ", (password: string) => {
+  // Ask for password if not given
+  readline.question("Minecraft password: ", function (password: string) {
     options.password = password;
     readline.isPassword = false;
     readline.output.write("\n");
@@ -96,4 +37,56 @@ if (!options.password) {
   readline.isPassword = true;
 } else {
   run();
+}
+
+function run() {
+  // create connection
+  console.log(
+    `Type ".help" for more information and ".exit" to quit\nConnecting to ${chalk.cyan(
+      options.host
+    )}:${chalk.green(options.port)}...`
+  );
+  const client = MC.createClient({
+    host: options.host,
+    port: options.port,
+    username: options.user,
+    password: options.password,
+    auth: options.type,
+    profilesFolder: false,
+  });
+
+  // client.on("packet", (packet, packetMeta) => {
+  //   initConnexion(packet, packetMeta);
+  // });
+
+  // wait for connection before doing anything
+  client.on("connect", function () {
+    const manager = new CommandManager();
+    manager.setCommand("exit", new ExitCommand());
+    manager.setCommand("clear", new ClearCommand());
+    manager.setCommand("help", new HelpCommand());
+
+    // wait for chat message to log
+    client.on("chat", function (packet: any) {
+      const jsonMsg = JSON.parse(packet.message);
+      if (options.debug) console.log(JSON.stringify(jsonMsg));
+      // clear prompt
+      process.stdout.clearLine(0);
+      process.stdout.cursorTo(0);
+      // log message
+      console.log(ChatComponents.fromJson(jsonMsg).toString());
+      // reset prompt
+      readline.prompt(true);
+    });
+
+    // wait for input
+    readline.on("line", function (text: string) {
+      if (text.length === 0 || manager.onCommand(text)) {
+        readline.prompt(true);
+      } else {
+        client.write("chat", { message: text });
+      }
+    });
+    readline.prompt(true);
+  });
 }

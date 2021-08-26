@@ -1,0 +1,13 @@
+{
+  translate: 'commands.list.players',
+  with: [
+    '1',
+    '30',
+    {
+      insertion: 'Kelg0rs',
+      clickEvent: [Object],
+      hoverEvent: [Object],
+      text: 'Kelg0rs'
+    }
+  ]
+}
