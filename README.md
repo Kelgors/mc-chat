@@ -7,7 +7,7 @@ You need a mojang account.
 ## Getting Started
 
 ```bash
-$ mc-chat -h 8.8.8.8 -p 25565 -u youremail@provider.ltd
+$ npm start --  --host play.1ef51.com -u test@gmail.com
 Minecraft password:
 Connecting to 8.8.8.8:25565...
 Notch joined the game
