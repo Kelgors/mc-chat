@@ -2,18 +2,23 @@
   "name": "minecraft-chat",
   "version": "1.0.0",
   "description": "Minecraft bot with ingame chat in terminal",
-  "main": "src/index.js",
+  "main": "build/index.js",
   "bin": {
     "mc-chat": "./bin/mc-chat"
   },
   "scripts": {
-    "start": "node src/index.js",
-    "start:debug": "node src/index.js --debug"
+    "start": "node build/index.js",
+    "build": "tsc",
+    "postinstall": "tsc"
   },
   "license": "BSD-3-Clause",
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
     "minecraft-protocol": "^1.26.5"
+  },
+  "devDependencies": {
+    "@types/node": "^16.7.2",
+    "typescript": "^4.3.5"
   }
 }

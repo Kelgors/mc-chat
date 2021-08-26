@@ -1,3 +1,8 @@
+# launcher_accounts.json
+launcher_accounts.json
+# build output
+build/
+
 # Logs
 logs
 *.log
@@ -102,6 +107,3 @@ dist
 
 # TernJS port file
 .tern-port
-
-# launcher_accounts.json
-launcher_accounts.json
