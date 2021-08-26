@@ -64,7 +64,7 @@ function run() {
 
   // wait for connection before doing anything
   client.on("connect", () => {
-    const packetManager = new PacketManager();
+    const packetManager = new PacketManager(options);
     const manager = new CommandManager();
     manager.setCommand("exit", new ExitCommand());
     manager.setCommand("clear", new ClearCommand());

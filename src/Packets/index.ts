@@ -9,6 +9,7 @@ import HeldItemSlotPacket from "./HeldItemSlotPacket";
 import RecipesPacket from "./RecipesPacket";
 import TagsPacket from "./TagsPacket";
 import EntitiesStatusPacket from "./EntitiesStatusPacket";
+import MapChunkPacket from "./MapChunkPacket";
 
 export {
   EncryptionPacket,
@@ -22,4 +23,5 @@ export {
   RecipesPacket,
   TagsPacket,
   EntitiesStatusPacket,
+  MapChunkPacket,
 };

@@ -8,7 +8,7 @@ readline.isPassword = false;
 readline._writeToOutput = function _writeToOutput(stringToWrite: string) {
   if (!readline.isPassword) readline.output.write(stringToWrite);
 };
-process.on('exit', () => {
+process.on("exit", () => {
   readline.close();
 });
 

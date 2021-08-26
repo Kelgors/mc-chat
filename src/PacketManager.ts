@@ -10,14 +10,17 @@ import {
   RecipesPacket,
   TagsPacket,
   EntitiesStatusPacket,
+  MapChunkPacket,
 } from "./Packets/";
 import IPacketHandler from "./types/IPacketHandler";
 import { MinecraftPacketMeta } from "./types/MinecraftPackets";
 
 export default class PacketManager {
   private packets: Record<string, IPacketHandler> = {};
+  private options: any;
 
-  constructor() {
+  constructor(options: any) {
+    this.options = options;
     const connexion = new EncryptionPacket();
     const compress = new CompressPacket();
     const playerInfo = new PlayerInfoPacket();
@@ -29,6 +32,7 @@ export default class PacketManager {
     const recipes = new RecipesPacket();
     const tags = new TagsPacket();
     const entities = new EntitiesStatusPacket();
+    const mapChunk = new MapChunkPacket();
 
     this.packets[connexion.packetMeta] = connexion;
     this.packets[compress.packetMeta] = compress;
@@ -41,10 +45,11 @@ export default class PacketManager {
     this.packets[recipes.packetMeta] = recipes;
     this.packets[tags.packetMeta] = tags;
     this.packets[entities.packetMeta] = entities;
+    this.packets[mapChunk.packetMeta] = mapChunk;
   }
 
   notImplementedStep = (packetMeta: any, packet: any) => {
-    console.log("Not implemented", packet);
+    if (this.options.debug) console.log("Not implemented", packetMeta);
   };
 
   processPacket = (packetMeta: MinecraftPacketMeta, packet: any): void => {
