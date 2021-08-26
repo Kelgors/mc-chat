@@ -1,16 +1,22 @@
+const chalk = require("chalk");
+const MC = require("minecraft-protocol");
+const { Command } = require("commander");
+
 import readline from "./readline";
 import CommandManager from "./CommandManager";
 import ExitCommand from "./Commands/ExitCommand";
 import ClearCommand from "./Commands/ClearCommand";
 import HelpCommand from "./Commands/HelpCommand";
 import ChatComponents from "./ChatComponents";
+
+import { initConnexion } from "./PacketManager";
+
 const { version: PACKAGE_VERSION } = require("../package.json");
-const chalk = require("chalk");
-const MC = require("minecraft-protocol");
+
 // Command-Line Arguments
-const { Command } = require("commander");
 console.log(`Welcome to mc-chat v${PACKAGE_VERSION}`);
 const program = new Command();
+
 program
   .option("-d, --debug", "Output json text message")
   .requiredOption("-h, --host <host>", "Specify the Minecraft IP server")
@@ -22,13 +28,14 @@ program
   .requiredOption("-u, --user <user>", "Minecraft account email")
   .option("-t, --type <type>", "Type of account (mojang|microsoft)", "mojang")
   .option("-P, --password <password>", "Minecraft account password");
+
 program.parse(process.argv);
+const options = program.opts();
 
 // Check for password
-const options = program.opts();
 if (!options.password) {
   // Ask for password if not given
-  readline.question("Minecraft password: ", function (password: string) {
+  readline.question("Minecraft password: ", (password: string) => {
     options.password = password;
     readline.isPassword = false;
     readline.output.write("\n");
@@ -55,19 +62,19 @@ function run() {
     profilesFolder: false,
   });
 
-  // client.on("packet", (packet, packetMeta) => {
-  //   initConnexion(packet, packetMeta);
-  // });
+  client.on("packet", (packet: any, packetMeta: any) => {
+    initConnexion(packetMeta, packet);
+  });
 
   // wait for connection before doing anything
-  client.on("connect", function () {
+  client.on("connect", () => {
     const manager = new CommandManager();
     manager.setCommand("exit", new ExitCommand());
     manager.setCommand("clear", new ClearCommand());
     manager.setCommand("help", new HelpCommand());
 
     // wait for chat message to log
-    client.on("chat", function (packet: any) {
+    client.on("chat", (packet: any) => {
       const jsonMsg = JSON.parse(packet.message);
       if (options.debug) console.log(JSON.stringify(jsonMsg));
       // clear prompt
@@ -80,7 +87,7 @@ function run() {
     });
 
     // wait for input
-    readline.on("line", function (text: string) {
+    readline.on("line", (text: string) => {
       if (text.length === 0 || manager.onCommand(text)) {
         readline.prompt(true);
       } else {

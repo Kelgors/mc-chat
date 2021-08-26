@@ -1,3 +1,5 @@
+import { EncryptionPacket } from "./Packets/";
+import CompressPacket from "./Packets/CompressPacket";
 import {
   MinecraftStepInitConnexion,
   MinecraftSecrets,
@@ -17,7 +19,7 @@ import {
 
 let step = MinecraftStepInitConnexion.CONNEXION;
 
-class MinecraftClient {
+export default class PacketManager {
   private secrets!: MinecraftSecrets;
   private threshold!: MinecraftThreshold;
   private playerInfo!: MinecraftPlayerInfo;
@@ -31,31 +33,30 @@ class MinecraftClient {
   private entities: MinecraftEntity[] = [];
 
   constructor() {}
-  connexionStep = (packet: MinecraftSecrets) => {
-    this.secrets = {
-      publicKey: Buffer.from(packet.publicKey).toString("base64"),
-      serverId: packet.serverId,
-      verifyToken: Buffer.from(packet.verifyToken).toString("base64"),
-    };
+
+  connexionStep = (packetMeta: any, packet: MinecraftSecrets) => {
+    const connexion = new EncryptionPacket();
+    this.secrets = connexion.process(packet);
     console.log("Secrets saved !");
   };
 
-  thresholdStep = (packet: MinecraftThreshold) => {
-    this.threshold = { ...packet };
+  thresholdStep = (packetMeta: any, packet: MinecraftThreshold) => {
+    const compress = new CompressPacket();
+    this.threshold = compress.process(packet);
     console.log("Threshold saved !");
   };
 
-  playerInfoStep = (packet: MinecraftPlayerInfo) => {
+  playerInfoStep = (packetMeta: any, packet: MinecraftPlayerInfo) => {
     this.playerInfo = { ...packet };
     console.log("PlayerInfos saved !");
   };
 
-  serverInfoStep = (packet: MinecraftServerInfo) => {
+  serverInfoStep = (packetMeta: any, packet: MinecraftServerInfo) => {
     this.serverInfo = { ...packet };
     console.log("ServerInfo saved !");
   };
 
-  channelStep = (packet: MinecraftChannel) => {
+  channelStep = (packetMeta: any, packet: MinecraftChannel) => {
     this.channel = {
       channel: packet.channel,
       data: packet.data.toString(),
@@ -63,22 +64,22 @@ class MinecraftClient {
     console.log("Channel saved !");
   };
 
-  difficultyInfoStep = (packet: MinecraftDifficultyInfo) => {
+  difficultyInfoStep = (packetMeta: any, packet: MinecraftDifficultyInfo) => {
     this.difficultyInfo = { ...packet };
     console.log("DifficultyInfo saved !");
   };
 
-  movementInfoStep = (packet: MinecraftPlayerMovement) => {
+  movementInfoStep = (packetMeta: any, packet: MinecraftPlayerMovement) => {
     this.playerMovement = { ...packet };
     console.log("PlayerMvementInfo saved !");
   };
 
-  slotStep = (packet: { slot: MinecraftSlot }) => {
+  slotStep = (packetMeta: any, packet: { slot: MinecraftSlot }) => {
     this.slot = packet.slot;
     console.log("Slot saved !");
   };
 
-  recipesStep = (packet: any) => {
+  recipesStep = (packetMeta: any, packet: any) => {
     for (let i = 0; i < packet.recipes.length; i++) {
       const recipe: MinecraftRecipe = packet.recipes[i];
       this.recipes.push(recipe);
@@ -87,7 +88,7 @@ class MinecraftClient {
     console.log(`${this.recipes.length} Recipes saved !`);
   };
 
-  tagsStep = (packet: { tags: MinecraftTags }) => {
+  tagsStep = (packetMeta: any, packet: { tags: MinecraftTags }) => {
     for (let i = 0; i < packet.tags.length; i++) {
       const tag: MinecraftTag = packet.tags[i];
       this.tags.push(tag);
@@ -96,16 +97,16 @@ class MinecraftClient {
     console.log(`${this.tags.length} kinds of tags saved !`);
   };
 
-  entityStep = (packet: MinecraftEntity) => {
+  entityStep = (packetMeta: any, packet: MinecraftEntity) => {
     this.entities.push(packet);
     console.log("Entity saved");
   };
 
-  notImplementedStep = (packet: any) => {
+  notImplementedStep = (packetMeta: any, packet: any) => {
     console.log("Not implemented", packet);
   };
 
-  public steps: Record<number, (packet: any) => void> = {
+  public steps: Record<number, (packetMeta: any, packet: any) => void> = {
     [MinecraftStepInitConnexion.CONNEXION]: this.connexionStep,
     [MinecraftStepInitConnexion.THRESHOLD]: this.thresholdStep,
     [MinecraftStepInitConnexion.PLAYER_INFO]: this.playerInfoStep,
@@ -122,11 +123,11 @@ class MinecraftClient {
   };
 }
 
-const client = new MinecraftClient();
+const client = new PacketManager();
 
-export const initConnexion = (packet: any, packetMeta: any) => {
+export const initConnexion = (packetMeta: any, packet: any) => {
   const stepFunction = client.steps[step];
-  if (stepFunction) stepFunction(packet);
+  if (stepFunction) stepFunction(packetMeta, packet);
 
   step++;
   if (step > MinecraftStepInitConnexion.MAX) return;
