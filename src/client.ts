@@ -12,6 +12,7 @@ import {
   MinecraftChannel,
   MinecraftTags,
   MinecraftTag,
+  MinecraftEntity,
 } from "./types";
 
 let step = MinecraftStepInitConnexion.CONNEXION;
@@ -27,6 +28,7 @@ class MinecraftClient {
   private slot!: MinecraftSlot;
   private recipes: MinecraftRecipes = [];
   private tags: MinecraftTags = [];
+  private entities: MinecraftEntity[] = [];
 
   constructor() {}
   connexionStep = (packet: MinecraftSecrets) => {
@@ -94,6 +96,11 @@ class MinecraftClient {
     console.log(`${this.tags.length} kinds of tags saved !`);
   };
 
+  entityStep = (packet: MinecraftEntity) => {
+    this.entities.push(packet);
+    console.log("Entity saved");
+  };
+
   notImplementedStep = (packet: any) => {
     console.log("Not implemented", packet);
   };
@@ -109,6 +116,7 @@ class MinecraftClient {
     [MinecraftStepInitConnexion.SLOTS]: this.slotStep,
     [MinecraftStepInitConnexion.RECIPES]: this.recipesStep,
     [MinecraftStepInitConnexion.TAGS]: this.tagsStep,
+    [MinecraftStepInitConnexion.ENTITY]: this.entityStep,
     [MinecraftStepInitConnexion.MAX]: this.notImplementedStep,
   };
 }

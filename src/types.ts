@@ -88,6 +88,11 @@ export interface MinecraftTag {
 
 export type MinecraftTags = MinecraftTag[];
 
+export interface MinecraftEntity {
+  entityId: number;
+  entityStatus: number;
+}
+
 export enum MinecraftStepInitConnexion {
   CONNEXION,
   THRESHOLD,
@@ -99,5 +104,6 @@ export enum MinecraftStepInitConnexion {
   SLOTS,
   RECIPES,
   TAGS,
+  ENTITY,
   MAX,
 }
