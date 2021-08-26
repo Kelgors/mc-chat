@@ -104,6 +104,7 @@ export enum MinecraftStepInitConnexion {
   SLOTS,
   RECIPES,
   TAGS,
-  ENTITY,
+  ENTITY_1,
+  ENTITY_2,
   MAX,
 }

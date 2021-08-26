@@ -54,8 +54,8 @@ const run = () => {
     console.log(state);
   });
 
-  client.on("packet", (packet) => {
-    initConnexion(packet);
+  client.on("packet", (packet, packetMeta) => {
+    initConnexion(packet, packetMeta);
   });
 
   client.on("chat", function (packet) {

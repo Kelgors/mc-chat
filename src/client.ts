@@ -116,17 +116,19 @@ class MinecraftClient {
     [MinecraftStepInitConnexion.SLOTS]: this.slotStep,
     [MinecraftStepInitConnexion.RECIPES]: this.recipesStep,
     [MinecraftStepInitConnexion.TAGS]: this.tagsStep,
-    [MinecraftStepInitConnexion.ENTITY]: this.entityStep,
+    [MinecraftStepInitConnexion.ENTITY_1]: this.entityStep,
+    [MinecraftStepInitConnexion.ENTITY_2]: this.entityStep,
     [MinecraftStepInitConnexion.MAX]: this.notImplementedStep,
   };
 }
 
 const client = new MinecraftClient();
 
-export const initConnexion = (packet: any) => {
+export const initConnexion = (packet: any, packetMeta: any) => {
   const stepFunction = client.steps[step];
   if (stepFunction) stepFunction(packet);
 
   step++;
   if (step > MinecraftStepInitConnexion.MAX) return;
+  console.log(packetMeta);
 };
