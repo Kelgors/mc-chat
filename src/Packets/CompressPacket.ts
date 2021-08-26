@@ -3,12 +3,17 @@ import { MinecraftThreshold } from "../types/MinecraftPackets";
 
 export default class CompressPacket implements IPacketHandler {
   packetMeta = "compress";
+  compress!: MinecraftThreshold;
 
-  process(packet: any): MinecraftThreshold {
-    const compress: MinecraftThreshold = {
+  process(packet: any): boolean {
+    this.compress = {
       threshold: packet.threshold,
     };
 
-    return compress;
+    return true;
+  }
+
+  getData(): MinecraftThreshold {
+    return this.compress;
   }
 }

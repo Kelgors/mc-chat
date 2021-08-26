@@ -1,6 +1,6 @@
-import { EncryptionPacket } from "./Packets/";
-import CompressPacket from "./Packets/CompressPacket";
+import { EncryptionPacket, CompressPacket, PlayerInfoPacket } from "./Packets/";
 import {
+  MinecraftPacketMeta,
   MinecraftStepInitConnexion,
   MinecraftSecrets,
   MinecraftThreshold,
@@ -15,7 +15,7 @@ import {
   MinecraftTags,
   MinecraftTag,
   MinecraftEntity,
-} from "./types";
+} from "./types/MinecraftPackets";
 
 let step = MinecraftStepInitConnexion.CONNEXION;
 
@@ -31,24 +31,43 @@ export default class PacketManager {
   private recipes: MinecraftRecipes = [];
   private tags: MinecraftTags = [];
   private entities: MinecraftEntity[] = [];
+  private packets: Record<string, (packet: any) => any> = {};
 
-  constructor() {}
+  constructor() {
+    const connexion = new EncryptionPacket();
+    const compress = new CompressPacket();
+    const playerInfo = new PlayerInfoPacket();
+
+    this.packets[connexion.packetMeta] = connexion.process;
+    this.packets[compress.packetMeta] = compress.process;
+    this.packets[playerInfo.packetMeta] = playerInfo.process;
+  }
 
   connexionStep = (packetMeta: any, packet: MinecraftSecrets) => {
     const connexion = new EncryptionPacket();
-    this.secrets = connexion.process(packet);
-    console.log("Secrets saved !");
+
+    if (connexion.process(packet)) {
+      this.secrets = connexion.getData();
+      console.log("Secrets saved !");
+    }
   };
 
   thresholdStep = (packetMeta: any, packet: MinecraftThreshold) => {
     const compress = new CompressPacket();
-    this.threshold = compress.process(packet);
-    console.log("Threshold saved !");
+
+    if (compress.process(packet)) {
+      this.threshold = compress.getData();
+      console.log("Threshold saved !");
+    }
   };
 
   playerInfoStep = (packetMeta: any, packet: MinecraftPlayerInfo) => {
-    this.playerInfo = { ...packet };
-    console.log("PlayerInfos saved !");
+    const playerInfo = new PlayerInfoPacket();
+
+    if (playerInfo.process(packet)) {
+      this.playerInfo = playerInfo.getData();
+      console.log("PlayerInfos saved !");
+    }
   };
 
   serverInfoStep = (packetMeta: any, packet: MinecraftServerInfo) => {
@@ -106,6 +125,10 @@ export default class PacketManager {
     console.log("Not implemented", packet);
   };
 
+  processPacket = (packetMeta: MinecraftPacketMeta, packet: any): void => {
+    if (this.packets[packetMeta.name]) this.packets[packetMeta.name](packet);
+  };
+
   public steps: Record<number, (packetMeta: any, packet: any) => void> = {
     [MinecraftStepInitConnexion.CONNEXION]: this.connexionStep,
     [MinecraftStepInitConnexion.THRESHOLD]: this.thresholdStep,
@@ -126,8 +149,9 @@ export default class PacketManager {
 const client = new PacketManager();
 
 export const initConnexion = (packetMeta: any, packet: any) => {
-  const stepFunction = client.steps[step];
-  if (stepFunction) stepFunction(packetMeta, packet);
+  client.processPacket(packetMeta, packet);
+  // const stepFunction = client.steps[step];
+  // if (stepFunction) stepFunction(packetMeta, packet);
 
   step++;
   if (step > MinecraftStepInitConnexion.MAX) return;

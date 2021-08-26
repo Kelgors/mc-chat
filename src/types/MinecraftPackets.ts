@@ -1,3 +1,10 @@
+import { States } from "minecraft-protocol";
+
+export interface MinecraftPacketMeta {
+  size: number,
+  name: string,
+  state: States
+}
 export interface MinecraftSecrets {
   serverId: string;
   publicKey: string;
@@ -104,7 +111,8 @@ export enum MinecraftStepInitConnexion {
   SLOTS,
   RECIPES,
   TAGS,
-  ENTITY,
+  ENTITY_1,
+  ENTITY_2,
   MAX,
 }
 

@@ -3,14 +3,19 @@ import { MinecraftSecrets } from "../types/MinecraftPackets";
 
 export default class EncryptionPacket implements IPacketHandler {
   packetMeta = "encryption_begin";
+  secret!: MinecraftSecrets;
 
-  process(packet: any): MinecraftSecrets {
-    const secret: MinecraftSecrets = {
+  process(packet: any): boolean {
+    this.secret = {
       publicKey: Buffer.from(packet.publicKey).toString("base64"),
       serverId: packet.serverId,
       verifyToken: Buffer.from(packet.verifyToken).toString("base64"),
     };
 
-    return secret;
+    return true;
+  }
+
+  getData(): MinecraftSecrets {
+    return this.secret;
   }
 }
