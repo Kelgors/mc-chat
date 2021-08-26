@@ -8,7 +8,9 @@ function fromJson(json) {
     if (Array.isArray(json)) {
         return fromJsonArray(json);
     }
-    if (typeof json === 'string') return json;
+    if (typeof json === 'string') {
+        return json;
+    }
     return fromJsonObject(json);
 }
 

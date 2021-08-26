@@ -1,7 +1,6 @@
 # Minecraft-Chat
 
-Permit to chat from your terminal. Be aware that your character will be connected to the server
-and can take damage or die.
+Chat with your friend from your terminal. Be aware that your character will be connected to the server and can take damage or die.
 You need a mojang account or microsoft account.
 
 Come say hi to `play.1ef51.com` =)
@@ -19,7 +18,28 @@ Notch joined the game
 ```
 
 You can provide your password via the -P &lt;password&gt; argument but it will be stored in your bash_history.
-Don't hesitate to user `mc-chat --help`
+
+Full list of commands via `mc-chat --help`
+
+## How-To
+
+Available for Linux or WSL.
+
+### Install
+
+```bash
+git clone https://github.com/Kelgors/mc-chat.git
+cd mc-chat
+npm install -g . # Add mc-chat command to your path
+```
+
+### Update
+
+```bash
+cd mc-chat
+git pull origin main
+npm install -g . # Add mc-chat command to your path
+```
 
 ## TODO
 
