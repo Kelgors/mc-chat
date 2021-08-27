@@ -12,6 +12,7 @@ import ChatComponents from "./ChatComponents";
 import PacketManager from "./PacketManager";
 import ActionManager from "./ActionManager";
 import ForwardCommand from "./Commands/ForwardCommand";
+import PositionCommand from "./Commands/PositionCommand";
 
 const { version: PACKAGE_VERSION } = require("../package.json");
 
@@ -73,6 +74,7 @@ function run() {
     manager.setCommand("clear", new ClearCommand());
     manager.setCommand("help", new HelpCommand());
     manager.setCommand("forward", new ForwardCommand(actionManager));
+    manager.setCommand("position", new PositionCommand(actionManager));
 
     // wait for chat message to log
     client.on("chat", (packet: any) => {

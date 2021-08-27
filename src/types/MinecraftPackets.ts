@@ -1,3 +1,4 @@
+import { InvalidArgumentError } from "commander";
 import { States } from "minecraft-protocol";
 
 export interface MinecraftPacketMeta {
@@ -17,8 +18,34 @@ export enum MinecraftPacketType {
   MAP_CHUNK = "map_chunk",
   SUCCESS = "success",
   DECLARE_RECIPES = "declare_recipes",
+  UNLOCK_RECIPES = "unlock_recipes",
   LOGIN = "login",
   TAGS = "tags",
+  UPDATE_LIGHT = "update_light",
+  DECLARE_COMMANDS = "declare_commands",
+  POSITION = "position",
+}
+
+export interface MinecraftPosition{
+    x: number,
+    y: number,
+    z: number,
+    yaw: number,
+    pitch: number,
+    flags: number,
+    teleportId: number,
+    dismountVehicle: boolean
+}
+
+interface DeclareCommand {
+  flags: any[];
+  children: any[];
+  redirectNode: number | undefined;
+  extraNodeData: string | undefined;
+}
+
+export interface DeclareCommands {
+  nodes: DeclareCommand[];
 }
 
 export interface MinecraftSecrets {
@@ -89,6 +116,18 @@ export interface MinecraftChunk {
   blockEntities: MinecraftBlockEntity[];
 }
 
+export interface MinecraftLight {
+  chunkX: number;
+  chunkZ: number;
+  trustEdges: boolean;
+  skyLightMask: number[];
+  blockLightMask: number[];
+  emptySkyLightMask: number[];
+  emptyBlockLightMask: number[];
+  skyLight: number[];
+  blockLight: number[];
+}
+
 export type MinecraftMap = Record<string, MinecraftChunk>;
 
 export type MinecraftDimensionValue = Record<string, any>;
@@ -123,6 +162,20 @@ export interface MinecraftRecipe {
   type: string;
   recipeId: string;
   data: any;
+}
+
+export interface MinecraftUnlockRecipes {
+  action: number;
+  craftingBookOpen: boolean;
+  filteringCraftable: boolean;
+  smeltingBookOpen: boolean;
+  filteringSmeltable: boolean;
+  blastFurnaceOpen: boolean;
+  filteringBlastFurnace: boolean;
+  smokerBookOpen: boolean;
+  filteringSmoker: boolean;
+  recipes1: string[];
+  recipes2: string[];
 }
 
 export type MinecraftRecipes = MinecraftRecipe[];

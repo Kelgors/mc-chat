@@ -11,6 +11,10 @@ import {
   TagsPacket,
   EntitiesStatusPacket,
   MapChunkPacket,
+  LightPacket,
+  UnlockRecipesPacket,
+  DeclareCommandsPacket,
+  PositionPacket,
 } from "./Packets/";
 import IPacketHandler from "./types/IPacketHandler";
 import {
@@ -36,6 +40,10 @@ export default class PacketManager {
     const tags = new TagsPacket();
     const entities = new EntitiesStatusPacket();
     const mapChunk = new MapChunkPacket();
+    const lightPacket = new LightPacket();
+    const unlockRecipesPacket = new UnlockRecipesPacket();
+    const declareCommandsPacket = new DeclareCommandsPacket();
+    const positionPacket = new PositionPacket();
 
     this.packets = {
       [connexion.packetMeta]: connexion,
@@ -50,6 +58,10 @@ export default class PacketManager {
       [tags.packetMeta]: tags,
       [entities.packetMeta]: entities,
       [mapChunk.packetMeta]: mapChunk,
+      [lightPacket.packetMeta]: lightPacket,
+      [unlockRecipesPacket.packetMeta]: unlockRecipesPacket,
+      [declareCommandsPacket.packetMeta]: declareCommandsPacket,
+      [positionPacket.packetMeta]: positionPacket,
     } as any; // dirty fix :)
   }
 
