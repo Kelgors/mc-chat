@@ -11,7 +11,7 @@ export default class MapChunkPacket implements IPacketHandler {
   constructor() {}
 
   process(packet: MinecraftChunk): boolean {
-    this.mapChunks[`${packet.x}-${packet.z}`] = packet;
+    this.mapChunks[`${packet.x}_${packet.z}`] = packet;
     return true;
   }
 

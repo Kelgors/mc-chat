@@ -1,5 +1,6 @@
+import MC from "minecraft-protocol";
+
 const chalk = require("chalk");
-const MC = require("minecraft-protocol");
 const { Command } = require("commander");
 
 import readline from "./readline";
@@ -62,13 +63,14 @@ function run() {
     username: options.user,
     password: options.password,
     auth: options.type,
+    // @ts-ignore
     profilesFolder: false,
   });
 
   // wait for connection before doing anything
   client.on("connect", () => {
     const packetManager = new PacketManager(options);
-    const actionManager = new ActionManager(options, packetManager);
+    const actionManager = new ActionManager(options, packetManager, client);
     const manager = new CommandManager();
     manager.setCommand("exit", new ExitCommand());
     manager.setCommand("clear", new ClearCommand());
