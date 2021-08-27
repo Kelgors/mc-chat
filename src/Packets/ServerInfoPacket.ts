@@ -1,11 +1,14 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftServerInfo } from "../types/MinecraftPackets";
+import {
+  MinecraftPacketType,
+  MinecraftServerInfo,
+} from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol#Join_game
  */
 export default class ServerInfoPacket implements IPacketHandler {
-  packetMeta = "login";
+  packetMeta = MinecraftPacketType.LOGIN;
   serverInfo!: MinecraftServerInfo;
 
   process(packet: any): boolean {
@@ -16,7 +19,7 @@ export default class ServerInfoPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftServerInfo {
+  get data(): MinecraftServerInfo {
     return this.serverInfo;
   }
 }

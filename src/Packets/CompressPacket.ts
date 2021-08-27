@@ -1,11 +1,14 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftThreshold } from "../types/MinecraftPackets";
+import {
+  MinecraftPacketType,
+  MinecraftThreshold,
+} from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol#Set_Compression
  */
 export default class CompressPacket implements IPacketHandler {
-  packetMeta = "compress";
+  packetMeta = MinecraftPacketType.COMPRESS;
   compress!: MinecraftThreshold;
 
   process(packet: any): boolean {
@@ -16,7 +19,7 @@ export default class CompressPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftThreshold {
+  get data(): MinecraftThreshold {
     return this.compress;
   }
 }

@@ -1,11 +1,14 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftSecrets } from "../types/MinecraftPackets";
+import {
+  MinecraftPacketType,
+  MinecraftSecrets,
+} from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol_Encryption
  */
 export default class EncryptionPacket implements IPacketHandler {
-  packetMeta = "encryption_begin";
+  packetMeta = MinecraftPacketType.ENCRYPTION_BEGIN;
   secret!: MinecraftSecrets;
 
   process(packet: any): boolean {
@@ -18,7 +21,7 @@ export default class EncryptionPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftSecrets {
+  get data(): MinecraftSecrets {
     return this.secret;
   }
 }

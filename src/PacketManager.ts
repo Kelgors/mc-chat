@@ -13,10 +13,13 @@ import {
   MapChunkPacket,
 } from "./Packets/";
 import IPacketHandler from "./types/IPacketHandler";
-import { MinecraftPacketMeta } from "./types/MinecraftPackets";
+import {
+  MinecraftPacketMeta,
+  MinecraftPacketType,
+} from "./types/MinecraftPackets";
 
 export default class PacketManager {
-  private packets: Record<string, IPacketHandler> = {};
+  private packets!: Record<MinecraftPacketType, IPacketHandler>;
   private options: any;
 
   constructor(options: any) {
@@ -34,18 +37,20 @@ export default class PacketManager {
     const entities = new EntitiesStatusPacket();
     const mapChunk = new MapChunkPacket();
 
-    this.packets[connexion.packetMeta] = connexion;
-    this.packets[compress.packetMeta] = compress;
-    this.packets[playerInfo.packetMeta] = playerInfo;
-    this.packets[serverInfo.packetMeta] = serverInfo;
-    this.packets[channel.packetMeta] = channel;
-    this.packets[difficultyInfo.packetMeta] = difficultyInfo;
-    this.packets[playerAbilities.packetMeta] = playerAbilities;
-    this.packets[slotItem.packetMeta] = slotItem;
-    this.packets[recipes.packetMeta] = recipes;
-    this.packets[tags.packetMeta] = tags;
-    this.packets[entities.packetMeta] = entities;
-    this.packets[mapChunk.packetMeta] = mapChunk;
+    this.packets = {
+      [connexion.packetMeta]: connexion,
+      [compress.packetMeta]: compress,
+      [playerInfo.packetMeta]: playerInfo,
+      [serverInfo.packetMeta]: serverInfo,
+      [channel.packetMeta]: channel,
+      [difficultyInfo.packetMeta]: difficultyInfo,
+      [playerAbilities.packetMeta]: playerAbilities,
+      [slotItem.packetMeta]: slotItem,
+      [recipes.packetMeta]: recipes,
+      [tags.packetMeta]: tags,
+      [entities.packetMeta]: entities,
+      [mapChunk.packetMeta]: mapChunk,
+    } as any; // dirty fix :)
   }
 
   notImplementedStep = (packetMeta: any, packet: any) => {
@@ -57,4 +62,8 @@ export default class PacketManager {
       this.packets[packetMeta.name].process(packet);
     else this.notImplementedStep(packetMeta, packet);
   };
+
+  public get data(): Record<MinecraftPacketType, IPacketHandler> {
+    return this.packets;
+  }
 }

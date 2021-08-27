@@ -1,11 +1,14 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftPlayerAbilities } from "../types/MinecraftPackets";
+import {
+  MinecraftPacketType,
+  MinecraftPlayerAbilities,
+} from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol#Player_Abilities_.28serverbound.29
  */
 export default class AbilitiesPacket implements IPacketHandler {
-  packetMeta = "abilities";
+  packetMeta = MinecraftPacketType.ABILITIES;
   playerAbilities!: MinecraftPlayerAbilities;
 
   process(packet: any): boolean {
@@ -18,7 +21,7 @@ export default class AbilitiesPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftPlayerAbilities {
+  get data(): MinecraftPlayerAbilities {
     return this.playerAbilities;
   }
 }

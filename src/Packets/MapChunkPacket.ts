@@ -1,21 +1,21 @@
 import IPacketHandler from "../types/IPacketHandler";
-import {} from "../types/MinecraftPackets";
+import { MinecraftChunk, MinecraftMap, MinecraftPacketType } from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol#Chunk_Data
  */
 export default class MapChunkPacket implements IPacketHandler {
-  packetMeta = "map_chunk";
-  mapChunks: any[][] = [];
+  packetMeta = MinecraftPacketType.MAP_CHUNK;
+  mapChunks: MinecraftMap = {};
 
-  constructor() {
-  }
+  constructor() {}
 
-  process(packet: any): boolean {
+  process(packet: MinecraftChunk): boolean {
+    this.mapChunks[`${packet.x}-${packet.z}`] = packet;
     return true;
   }
 
-  getData(): any {
+  get data(): MinecraftMap {
     return this.mapChunks;
   }
 }

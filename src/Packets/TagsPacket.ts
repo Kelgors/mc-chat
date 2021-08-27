@@ -1,11 +1,15 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftTags, MinecraftTag } from "../types/MinecraftPackets";
+import {
+  MinecraftTags,
+  MinecraftTag,
+  MinecraftPacketType,
+} from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol#Tags
  */
 export default class TagsPacket implements IPacketHandler {
-  packetMeta = "tags";
+  packetMeta = MinecraftPacketType.TAGS;
   tags: MinecraftTags = [];
 
   process(packet: any): boolean {
@@ -16,7 +20,7 @@ export default class TagsPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftTags {
+  get data(): MinecraftTags {
     return this.tags;
   }
 }

@@ -10,6 +10,8 @@ import HelpCommand from "./Commands/HelpCommand";
 import ChatComponents from "./ChatComponents";
 
 import PacketManager from "./PacketManager";
+import ActionManager from "./ActionManager";
+import ForwardCommand from "./Commands/ForwardCommand";
 
 const { version: PACKAGE_VERSION } = require("../package.json");
 
@@ -65,20 +67,25 @@ function run() {
   // wait for connection before doing anything
   client.on("connect", () => {
     const packetManager = new PacketManager(options);
+    const actionManager = new ActionManager(options, packetManager);
     const manager = new CommandManager();
     manager.setCommand("exit", new ExitCommand());
     manager.setCommand("clear", new ClearCommand());
     manager.setCommand("help", new HelpCommand());
+    manager.setCommand("forward", new ForwardCommand(actionManager));
 
     // wait for chat message to log
     client.on("chat", (packet: any) => {
       const jsonMsg = JSON.parse(packet.message);
       if (options.debug) console.log(JSON.stringify(jsonMsg));
+
       // clear prompt
       process.stdout.clearLine(0);
       process.stdout.cursorTo(0);
+
       // log message
       console.log(ChatComponents.fromJson(jsonMsg).toString());
+
       // reset prompt
       readline.prompt(true);
     });
@@ -95,6 +102,8 @@ function run() {
         client.write("chat", { message: text });
       }
     });
+
+    // reset prompt
     readline.prompt(true);
   });
 }

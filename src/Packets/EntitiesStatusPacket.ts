@@ -1,11 +1,14 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftEntityStatus } from "../types/MinecraftPackets";
+import {
+  MinecraftEntityStatus,
+  MinecraftPacketType,
+} from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol#Entity_Status
  */
 export default class EntitiesStatusPacket implements IPacketHandler {
-  packetMeta = "entity_status";
+  packetMeta = MinecraftPacketType.ENTITY_STATUS;
   entityStatus: MinecraftEntityStatus[] = [];
 
   process(packet: any): boolean {
@@ -14,7 +17,7 @@ export default class EntitiesStatusPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftEntityStatus[] {
+  get data(): MinecraftEntityStatus[] {
     return this.entityStatus;
   }
 }

@@ -1,11 +1,11 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftChannel } from "../types/MinecraftPackets";
+import { MinecraftChannel, MinecraftPacketType } from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Plugin_channels
  */
 export default class ChannelPacket implements IPacketHandler {
-  packetMeta = "custom_payload";
+  packetMeta = MinecraftPacketType.CUSTOM_PAYLOAD;
   channel!: MinecraftChannel;
 
   process(packet: any): boolean {
@@ -17,7 +17,7 @@ export default class ChannelPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftChannel {
+  get data(): MinecraftChannel {
     return this.channel;
   }
 }

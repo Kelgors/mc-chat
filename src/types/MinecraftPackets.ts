@@ -2,9 +2,25 @@ import { States } from "minecraft-protocol";
 
 export interface MinecraftPacketMeta {
   size: number;
-  name: string;
+  name: MinecraftPacketType;
   state: States;
 }
+
+export enum MinecraftPacketType {
+  ABILITIES = "abilities",
+  CUSTOM_PAYLOAD = "custom_payload",
+  COMPRESS = "compress",
+  DIFFICULTY = "difficulty",
+  ENCRYPTION_BEGIN = "encryption_begin",
+  ENTITY_STATUS = "entity_status",
+  HELD_ITEM_SLOT = "held_item_slot",
+  MAP_CHUNK = "map_chunk",
+  SUCCESS = "success",
+  DECLARE_RECIPES = "declare_recipes",
+  LOGIN = "login",
+  TAGS = "tags",
+}
+
 export interface MinecraftSecrets {
   serverId: string;
   publicKey: string;
@@ -52,6 +68,28 @@ export enum MinecraftGameMode {
   SPECTATOR,
   NONE = -1,
 }
+
+interface MinecraftBlockEntity {
+  type: string;
+  name: string;
+  value: { MOTION_BLOCKING: any; WORLD_SURFACE: any };
+}
+
+export interface MinecraftChunk {
+  x: number;
+  z: number;
+  bitMap: number[];
+  heightmaps: {
+    type: string;
+    name: string;
+    value: MinecraftBlockEntity;
+  };
+  biomes: number[];
+  chunkData: string;
+  blockEntities: MinecraftBlockEntity[];
+}
+
+export type MinecraftMap = Record<string, MinecraftChunk>;
 
 export type MinecraftDimensionValue = Record<string, any>;
 

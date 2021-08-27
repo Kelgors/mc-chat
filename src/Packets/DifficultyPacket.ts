@@ -1,11 +1,14 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftDifficultyInfo } from "../types/MinecraftPackets";
+import {
+  MinecraftDifficultyInfo,
+  MinecraftPacketType,
+} from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol#Server_Difficulty
  */
 export default class DifficultyPacket implements IPacketHandler {
-  packetMeta = "difficulty";
+  packetMeta = MinecraftPacketType.DIFFICULTY;
   difficultyInfo!: MinecraftDifficultyInfo;
 
   process(packet: any): boolean {
@@ -17,7 +20,7 @@ export default class DifficultyPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftDifficultyInfo {
+  get data(): MinecraftDifficultyInfo {
     return this.difficultyInfo;
   }
 }

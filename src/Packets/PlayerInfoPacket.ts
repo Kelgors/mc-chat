@@ -1,11 +1,14 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftPlayerInfo } from "../types/MinecraftPackets";
+import {
+  MinecraftPacketType,
+  MinecraftPlayerInfo,
+} from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol#Login_Success
  */
 export default class PlayerInfoPacket implements IPacketHandler {
-  packetMeta = "success";
+  packetMeta = MinecraftPacketType.SUCCESS;
   playerInfo!: MinecraftPlayerInfo;
 
   process(packet: any): boolean {
@@ -17,7 +20,7 @@ export default class PlayerInfoPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftPlayerInfo {
+  get data(): MinecraftPlayerInfo {
     return this.playerInfo;
   }
 }

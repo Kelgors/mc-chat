@@ -1,11 +1,15 @@
 import IPacketHandler from "../types/IPacketHandler";
-import { MinecraftRecipes, MinecraftRecipe } from "../types/MinecraftPackets";
+import {
+  MinecraftRecipes,
+  MinecraftRecipe,
+  MinecraftPacketType,
+} from "../types/MinecraftPackets";
 
 /**
  * https://wiki.vg/Protocol#Declare_Recipes
  */
 export default class RecipesPacket implements IPacketHandler {
-  packetMeta = "declare_recipes";
+  packetMeta = MinecraftPacketType.DECLARE_RECIPES;
   recipes: MinecraftRecipes = [];
 
   process(packet: any): boolean {
@@ -16,7 +20,7 @@ export default class RecipesPacket implements IPacketHandler {
     return true;
   }
 
-  getData(): MinecraftRecipes {
+  get data(): MinecraftRecipes {
     return this.recipes;
   }
 }
