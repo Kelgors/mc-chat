@@ -1,0 +1,23 @@
+{
+    "translate": "death.attack.outOfWorld",
+    "with": [
+        {
+            "insertion": "Kelg0rs",
+            "clickEvent": {
+                "action": "suggest_command",
+                "value": "/tell Kelg0rs "
+            },
+            "hoverEvent": {
+                "action": "show_entity",
+                "contents": {
+                    "type": "minecraft:player",
+                    "id": "b0106b36-f0fc-4840-a55d-4220b1734aad",
+                    "name": {
+                        "text": "Kelg0rs"
+                    }
+                }
+            },
+            "text": "Kelg0rs"
+        }
+    ]
+}
