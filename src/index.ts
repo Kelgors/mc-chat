@@ -4,6 +4,8 @@ import ExitCommand from './Commands/ExitCommand';
 import ClearCommand from './Commands/ClearCommand';
 import HelpCommand from './Commands/HelpCommand';
 import ChatComponents from './ChatComponents';
+import { data as PacketVerboseList } from './packets';
+
 const { version: PACKAGE_VERSION } = require('../package.json');
 const chalk = require('chalk');
 const MC = require('minecraft-protocol');
@@ -34,6 +36,27 @@ if (!options.password) {
   run();
 }
 
+function onPacketDebugListener(data : any, metadata : any) {
+  if (PacketVerboseList.includes(metadata.name)) return;
+  console.log('Packet(name: %s) %o', metadata.name, data);
+}
+
+function onChatMessage(json: any) {
+  // clear prompt
+  process.stdout.clearLine(0);
+  process.stdout.cursorTo(0);
+  // log message
+  console.log(ChatComponents.fromJson(json).toString());
+  // reset prompt
+  readline.prompt(true);
+}
+function onClientChat(packet : any) {
+  onChatMessage(JSON.parse(packet.message))
+}
+function onClientDisconnected(packet : any) {
+  onChatMessage(JSON.parse(packet.reason));
+}
+
 function run() {
   // create connection
   console.log(`Type ".help" for more information and ".exit" to quit\nConnecting to ${chalk.cyan(options.host)}:${chalk.green(options.port)}...`);
@@ -53,17 +76,11 @@ function run() {
     manager.setCommand('help', new HelpCommand());
 
     // wait for chat message to log
-    client.on('chat', function (packet : any) {
-      const jsonMsg = JSON.parse(packet.message);
-      if (options.debug) console.log(JSON.stringify(jsonMsg));
-      // clear prompt
-      process.stdout.clearLine(0);
-      process.stdout.cursorTo(0);
-      // log message
-      console.log(ChatComponents.fromJson(jsonMsg).toString());
-      // reset prompt
-      readline.prompt(true);
-    });
+    if (options.debug) client.on('packet', onPacketDebugListener);
+    client.on('chat', onClientChat);
+    client.on('kick_disconnect', onClientDisconnected);
+    client.on('disconnect', onClientDisconnected);
+    client.on('end', process.exit.bind(process, 0));
 
     // wait for input
     readline.on('line', function (text : string) {
@@ -75,5 +92,7 @@ function run() {
     });
     readline.prompt(true);
   });
+
+
 
 }
